@@ -1,0 +1,19 @@
+\section{Contrast and Multiple Testing}
+
+\subsection{Contrast}
+
+The $F$-test is rather unspecific and gives us basically a yes/no answer. Often we have a more specific question than the global null hypothesis we want to answer. Such kind of questions can be formulated as so-called \textbf{contrasts}. As hypothesis we choose:
+$$H_0 : \sum_{i=1}^g c_i \mu_i = 0 \text{ and } H_A : \sum_{i=1}^g c_i \mu_i \neq 0$$
+
+Typically we have the side constraint that $\sum_{i=1}^g c_i = 0$. The contrast is about the differences between treatments and not about the overall response.
+
+We estimate the value of $\sum_{i=1}^g c_i \mu_i$ with:
+$$\sum_{i=1}^g c_i \hat \mu_i = \sum_{i=1}^g c_i \bar y_{i.}$$
+
+In addition, we could derive its accuracy (standard error), construct confidence intervals and do tests. \medskip
+
+(3.1.2 Some Technical Details are left out on purpose)
+
+\subsection{Multiple Testing}
+
+
