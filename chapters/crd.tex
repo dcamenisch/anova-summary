@@ -113,3 +113,22 @@ If the data has some serial structure, i.e., if observations were recorded in a 
 \end{center}
 
 
+\subsection{Power or "What Sample Size Do I Need?"}
+
+By construction, a statistical test controls the so-called type I error rate with the significance level $\alpha$. This means that the probability that we falsely reject the null hypothesis is less than or equal to $\alpha$. Besides the type I error, there is also a type II error. It occurs if we fail to reject the null hypothesis even though the alternative hypothesis holds. The probability of a type II error is typically denoted by $\beta$. \medskip
+
+The \textbf{power} of a statistical test is defined as \textit{P}(reject $H_0$ given that a certain setting under $H_A$ holds) = $1 - \beta$. Intuitively, it seems clear that the "further away" we choose the parameter setting from $H_0$ the larger will be the power, or the smaller will be the probability of a type II error.
+
+\subsubsection{Calculating Power for a Certain Design}
+
+Why should we be interested in such an abstract concept when planning an experiment? Power can be thought of as the probability of success, i.e. getting a significant result. The question of "what sample size do I need?" depends on the question of "what power you like". The power depends on:
+\begin{itemize}
+	\item design of the experiment
+	\item significance level
+	\item parameter setting under the alternative
+	\item sample size
+\end{itemize}
+
+We mainly use sample size and experimental design to maximize the power. We are not gonna look at how exactly the calculations work, rather we choose an alternative way. What we can always do is to simulate a lot of data sets under the alternative that we believe in and check how often we are rejecting the corresponding null hypothesis. The empirical rejection rate is then an estimate of the power. A nice side effect of doing a power analysis is that you actually do the whole data analysis on simulated data and you immediately see whether this works as intended. From a conceptual point of view, we can use such a simulation-based procedure for any design. However, the number of parameters grows rather quickly with increasing model complexity. \medskip
+
+In that sense, the results of a power analysis are typically not very precise. However, they should still give us a rough idea about the required sample size in the sense of whether we need 6 or 60 observations per group.
