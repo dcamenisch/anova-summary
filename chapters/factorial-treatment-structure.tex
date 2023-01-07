@@ -29,7 +29,13 @@ As usual, we estimate parameters using the principles of least squares and using
 	\widehat {(\alpha \beta)}_{ij} &= \bar y_{ij.} - \hat \mu - \hat \alpha_i - \hat \beta_j
 \end{align*}
 
-We end up with the mean of the observations in the corresponding cell as the expected value of the response $Y_{ijk}$.
+We end up with the mean of the observations in the corresponding cell as the expected value of the response $Y_{ijk}$.\medskip
+
+In R we use the following code:
+\begin{lstlisting}
+fit <- aov(y ~ a * b, data = d) 
+## alternatively: aov(y ~ a + b + a:b, data = d)
+\end{lstlisting}
 
 \subsubsection{Tests}
 
@@ -58,7 +64,7 @@ $$\frac{MS_{A}}{MS_E} \sim F_{(a-1), ab(n-1)}$$
 \textbf{Main Effect of $B$:} $H_0: \forall j. \; \beta_j = 0$. Under $H_0$ it holds that:
 $$\frac{MS_{B}}{MS_E} \sim F_{(b-1), ab(n-1)}$$
 
-We first check whether we need the interaction term or not. If there is no evidence of interaction, we continue with the inspection of the main effects.
+In R, we get the ANOVA table and the corresponding p-values again with the \textit{summary} function. We first check whether we need the interaction term or not. If there is no evidence of interaction, we continue with the inspection of the main effects.
 
 \subsubsection{Single Observations per Cell}
 
@@ -81,6 +87,12 @@ There are three different ways of model comparison approaches:
 	\item Type 3 (fully adjusted): $SS(A | 1, B, AB) \to SS(B | 1, A, AB) \to SS(AB | 1, A, B)$
 \end{itemize}
 
-Type 1 is what we will typically get with \textit{summary} in R. Hence we get different results whether we write $y \sim A * B$ or $y \sim B * A$. For type 2 we can either use the function \textit{Anova} in the package \textit{car} or we could compare the appropriate models with the function \textit{anova} ourselves. For type 3 we can use the command \textit{drop1}; we have to be careful that we set the contrast option to \textit{contr.sum} in this special situation for technical reasons, see also the warning in the help file of the function \textit{Anova} of package \textit{car}. \medskip
+Type 1 is what we will typically get with \textit{summary} in R. Hence we get different results whether we write $y \sim A * B$ or $y \sim B * A$. For type 2 we can either use the function \textit{Anova} in the package \textit{car} or we could compare the appropriate models with the function \textit{anova} ourselves. For type 3 we can use the command \textit{drop1}; we have to be careful that we set the contrast option to \textit{contr.sum} in this special situation for technical reasons, see also the warning in the help file of the function \textit{Anova} of package \textit{car}.
+
+\begin{lstlisting}
+## Type II sum of squares (Type III is similar)
+library(car)
+Anova(fit, type = "II", data = d)	
+\end{lstlisting}
 
 Typically, we take $MS_E$ from the full model (including all terms) as the estimate for the error variance to construct the corresponding $F$-tests.
