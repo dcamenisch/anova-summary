@@ -57,11 +57,18 @@ $$\hat \sigma^2 = MS_E = \frac{1}{N - g} SS_E$$
 Where $SS_E$ is the \textbf{error} or \textbf{residual sum of square}:
 $$SS_E = \sum_{i=1}^g \sum_{j=1}^{n_i}(y_{ij} - \hat \mu_i)^2$$
 
-We can fit the model as follows:
+Alternatively we can write this as:
+$$MS_E = \frac{1}{N-g} \sum_{i=1}^g (n_i - 1) s_i^2, \qquad s_i^2 = \frac{1}{n_i -1} \sum_{j=1}^{n_i}(y_{ij} - \hat \mu_i)^2$$
+
+Where $s_i^2$ is the empirical variance in treatment group $i$. The demoninator $N - g$ ensures that $\sigma^2$ is an unbiased estimator (the error estimate has $N-g$ degrees of freedom).\medskip
+
+We can use the following code to fit a model in R:
 \begin{lstlisting}
-fit <- aov(dresponse ~ dfactor, data = d)
-## Go get the estimated coefficients
+fit <- aov(y ~ x, data = d)
+## Get the estimated coefficients
 coef(fit) ## or dummy.coef(fit)
+## (Intercept) grouptrt1 grouptrt2
+##       5.032      -0.371      0.494
 \end{lstlisting}
 
 \subsubsection{Tests}
@@ -72,11 +79,13 @@ $$Y_{ij} = \mu + \epsilon_{ij}, \; \; \epsilon_{ij} \sim \mathcal N(0, \sigma^2)
 This is the so-called \textbf{single mean model}, a special case of the cell means model. We have the global null hypothesis
 $$H_0 : \mu_1 = ... = \mu_g$$
 
-vs. the alternative hypothesis
-$$H_A : \mu_k \neq \mu_l \text{ for at least one pair } k \neq l$$
+therefore the alternative hypothesis is
+$$H_A : \mu_k \neq \mu_l \text{ for at least one pair } k \neq l.$$
 
 The idea is to check whether the variation between the different treatment groups (the "signal") is  larger than the variation within the groups (the "noise"). We can decompose the total variation as follows:
 $$\underbrace{\sum_{i=1}^g \sum_{j=1}^{n_i}(\bar y_{ij} - \bar y_{..})^2}_{SS_T} = \underbrace{\sum_{i=1}^g \sum_{j=1}^{n_i}(\bar y_{i.} - \bar y_{..})^2}_{SS_{Trt}} + \underbrace{\sum_{i=1}^g \sum_{j=1}^{n_i}(y_{ij} - \hat \mu_i)^2}_{SS_E} $$
+
+Where $SS_T$ is the total sum of squares, $SS_{Trt}$ the treatment sum of squares (between groups) and $SS_E$ the error sum of squares (within groups).\medskip
 
 This information can be summarized in a \textbf{ANOVA} table.
 \begin{center}
@@ -94,7 +103,9 @@ If the variation between groups is substantially larger than the variation withi
 As with any other statistical test, we reject $H_0$ if the observed value of the $F$-ratio, our test statistics, lies in an "extreme" region of the corresponding $F$-distribution:
 $$F \text{-ratio} > F_{g-1, N-g, 1 - \alpha}$$
 
-As this test is based on the $F$-ratio we call it an \textbf{$F$-test}. In R, we can use the following function to get the ANOVA table and the $p$-value of the $F$-test.
+Where $\alpha$ is often chosen as 0.05. Since this test is based on the $F$-ratio we call it an \textbf{$F$-test}.\medskip
+
+In R, we can use the following function to get the ANOVA table and the $p$-value of the $F$-test.
 \begin{lstlisting}
 summary(fit)
 ##             Df Sum Sq Mean Sq F value Pr(>F)
@@ -102,11 +113,12 @@ summary(fit)
 ## Residuals   27  10.49    0.389
 \end{lstlisting}
 
-To perform statistical inference for the individual $\alpha_i$'s we use:
+To perform statistical inference on the individual $\alpha_i$'s we use:
 \begin{lstlisting}
 summary.lm(fit)   ## for the tests
 confint(fit)      ## for the confidence intervals
 \end{lstlisting}
+
 
 \subsection{Checking Model Assumptions}
 
@@ -118,7 +130,9 @@ Statistical inference is only valid if all model assumptions are fulfilled. So f
 	\item The errors have mean zero
 \end{itemize}
 
-We now introduce different plots to check these assumptions. This means that we use graphical tools to perform qualitative checks.
+We now introduce different plots to check these assumptions. This means that we use graphical tools to perform qualitative checks.\medskip
+
+The errors $\epsilon_{ij}$ cannot be observed, but the redisuduals $r_{ij} = y_{ij} - \hat \mu_{i}$ can be used as an estimate.
 
 \subsubsection{QQ-Plot}
 
@@ -149,15 +163,36 @@ If the data has some serial structure, i.e. a certain time order, we typically w
 \end{center}
 
 
+\subsubsection{Transformations Affect Interpretation}
+
+Whenever we transform the response we implicitly also change the interpretation of the model parameters. Therefore, while it is conceptually attractive to model the problem on an appropriate scale of the response, this typically has the side effect of making interpretation more difficult. For example, if we use the logarithm:
+$$\log (Y_{ij}) = \mu + \alpha_i + \epsilon_{ij}$$
+
+All the $\alpha_i$ have to be interpreted on the log-scale. For example, if we us \textit{contr.treatment} and we have $\hat \alpha_2 = 1.5$. This means: on the log-scale we estimate that the average value of group 2 is 1.5 larger than the average value of group 1. What about the original scale? We know that $\E[\log(Y_{ij})] = \mu + \alpha_i$, but the expected value on the original scale does not directly follow the transformation. However, we can make a statement about the median. On the log-scale the median is equal to the mean, hence:
+$$\text{media}(\log(Y_{ij})) = \mu + \alpha_i$$
+
+In contrast to the mean, any quantile directly transforms with a strictly monotone increasing function. As the median is nothing else than the 50\% quantile, we have:
+$$\text{media}(Y_{ij}) = e^{\mu + \alpha_i}$$
+
+Similarly, for the ratio:
+$$\frac{\text{media}(Y_{2j})}{\text{media}(Y_{1j})} = \frac{e^{\mu + \alpha_2}}{e^{\mu}} = e^{\alpha_2}$$
+
+Hence, we can make a statement that on the original scale the median of group 2 is $e^{\alpha_2} = 4.48$ as large as the median of group 1. This means that additive effects on the log-scale become multiplicative effects on the original scale. Unfortunately, the statement is only about the median and not the mean on the original scale. \medskip
+
+If we also consider a confidence intervals for $\alpha_2$, e.g. [1.2, 1.8], the transformed version [$e^{1.2}, e^{1.8}$] is a confidence interval for $e^{\alpha_2}$ which is the ratio of medians on the original scale.
+
 \subsection{Power / What Sample Size Do I Need?}
 
 By construction, a statistical test controls the so-called type I error rate with the significance level $\alpha$. This means that the probability that we falsely reject $H_0$ is less than or equal to $\alpha$. Besides the type I error, there is also a type II error. It occurs if we fail to reject $H_0$ even though $H_A$ holds. The probability of a type II error is typically denoted by $\beta$. \medskip
 
-The \textbf{power} of a statistical test is defined as \textit{P}(reject $H_0$ given that a certain setting under $H_A$ holds) = $1 - \beta$. Intuitively, it seems clear that the "further away" we choose the parameter setting from $H_0$ the larger will be the power, or the smaller will be the probability of a type II error.
+The \textbf{power} of a statistical test is defined as 
+$$\text{P}(\text{reject } H_0 \; | \; \text{a certain setting under } H_A \text{ holds}) = 1 - \beta.$$
+
+Intuitively, it seems clear that the "further away" we choose the parameter setting from $H_0$ the larger will be the power, or the smaller will be the probability of a type II error.
 
 \subsubsection{Calculating Power for a Certain Design}
 
-Why should we be interested in such an abstract concept when planning an experiment? Power can be thought of as the probability of success, i.e. getting a significant result. The question of "what sample size do I need?" depends on the question of "what power do I want". The power depends on:
+Power can be thought of as the probability of success, i.e. getting a significant result. The question of "what sample size do I need?" depends on the question of "what power do I want". The power depends on:
 \begin{itemize}
 	\item design of the experiment
 	\item significance level

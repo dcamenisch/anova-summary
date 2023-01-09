@@ -2,7 +2,7 @@
 
 \subsection{Contrast}
 
-The $F$-test is rather unspecific and gives us basically a yes/no answer. Often we have a more specific question than the global null hypothesis we want to answer. Such kind of questions can be formulated as so-called \textbf{contrasts}. As hypothesis we choose:
+The $F$-test is rather unspecific and gives us basically a yes/no answer. It does not tell us what treatment (or combination of treatments) is significant. Such kind of questions can be formulated as so-called \textbf{contrasts}. As hypothesis we choose:
 $$H_0 : \sum_{i=1}^g c_i \mu_i = 0 \text{ and } H_A : \sum_{i=1}^g c_i \mu_i \neq 0$$
 
 Typically we have the side constraint that $\sum_{i=1}^g c_i = 0$. The contrast is about the differences between treatments and not about the overall response. We estimate the value of $\sum_{i=1}^g c_i \mu_i$ with:
@@ -16,6 +16,23 @@ library(multcomp)
 fit.glht <- glht(fit, linfct = mcp(group = c(1, -1/2, -1/2)))
 summary(fit.glht)
 \end{lstlisting}
+
+Every contrast has an associated sum of squares:
+$$SS_C \frac{(\sum_{i=1}^g c_i \bar y_{i.})^2}{\sum_{i=1}^g \frac{c_i^2}{n_i}}$$	
+
+It has one degree of freedom and therefore $MS_C = SS_C$. We have:
+$$\frac{MS_C}{MS_E} \sim F_{1, N-g}$$
+
+Two contrasts $c, c^*$ are orthogonal if:
+$$\sum_{i=1}^g \frac{c_i c_i^*}{n_i} = 0$$
+
+In this case, the corresponding estimates are independent. If we have $g$ treatments, we can find
+$g - 1$ different orthogonal contrasts (one dimension is already used by the global mean). A set of orthogonal contrasts partitions the treatment sum of squares meaning that if
+$c^1, ..., c^{g-1}$ are orthogonal contrasts it holds that:
+$$SS_{c^1} + ... + SS_{c^{g-1}} = SS_{Trt}$$
+
+Multiple contrasts are all orthogonal if and only if for the matrix $C$ that represents them, $C^\top C$ is diagonal.
+
 
 \subsection{Multiple Testing}
 

@@ -1,6 +1,11 @@
 \section{Factorial Treatment Structure}
 
-Often treatments are combinations of the levels of two or more factors, this is called \textbf{factorial treatment structure}. If we observe all possible combinations, we call them \textbf{crossed}. This typically leads to questions about the interaction of the different factors (or if the interact at all).
+Often treatments are combinations of the levels of two or more factors, this is called \textbf{factorial treatment structure}. If we observe all possible combinations, we call them \textbf{crossed}. In R, we can count the number of observations for every combination of the levels with:
+\begin{lstlisting}
+xtabs(~ factor1 + factor2, data = d)
+\end{lstlisting}
+
+This typically leads to questions about the interaction of the different factors (or if the interact at all).
 
 
 \subsection{Two-Way ANOVA Model}
@@ -68,7 +73,9 @@ In R, we get the ANOVA table and the corresponding p-values again with the \text
 
 \subsubsection{Single Observations per Cell}
 
-If we only have a single observation in each "cell", we cannot do statistical inference anymore with a model including the interaction. The reason is that we have no idea of the experimental error. However, we can still fit a main effects only model. If the data generating mechanism actually contains an interaction, we are fitting a wrong model. The consequence is that the estimate of the error variance will be biased (upward). Hence, the corresponding tests will be too conservative, meaning p-values will be too large and confidence intervals too wide. This is not a problem as the type I error rate is still controlled; we “just” lose power.
+If we only have a single observation in each "cell", we cannot do statistical inference anymore with a model including the interaction. The reason is that we have no idea of the experimental error. However, we can still fit a main effects only model. If the data generating mechanism actually contains an interaction, we are fitting a wrong model. The consequence is that the estimate of the error variance will be biased (upward). Hence, the corresponding tests will be too conservative, meaning p-values will be too large and confidence intervals too wide. This is not a problem as the type I error rate is still controlled; we “just” lose power. \medskip
+
+Quite often, we can get rid of interactions if we look at the problem on a different scale, i.e. if we transform the response appropriately. A famous example is the logarithm. Effects that are multiplicative on the original scale become additive on the log-scale, i.e. no interaction is needed on the log-scale.
 
 \subsubsection{Checking Model Assumptions}
 
@@ -76,7 +83,7 @@ As before, we use the QQ-plot and the Tukey-Anscombe plot to check the model ass
 
 \subsubsection{Unbalanced Data}
 
-We started with the very strong assumption that our data is balanced, i.e., we have the same number of replicates. This assumption made our life "easy" in the sense that we could uniquely decompose total variability into different sources and we could estimate the parameters of the coefficients of a factor by ignoring the other factors. In practice, data is typically not balanced. \medskip
+We started with the very strong assumption that our data is balanced, i.e., we have the same number of replicates. This assumption made our life "easy" in the sense that we could uniquely decompose total variability into different sources and we could estimate the parameters of the coefficients of a factor by ignoring the other factors. In practice, data is typically not balanced and we cannot decompose the variability. This problem can be solved by using a model comparison approach. \medskip
 
 We use the following notation: $SS( B | 1, A)$ denotes the \textbf{reduction in residual sum of squares} when comparing the model $(1, A, B) = y \sim A + B$ with $(1, A) = y \sim A$. The 1 denotes the overall mean $\mu$. Interpretation of the corresponding test is as follows: "Do we need factor B in the model if we already have factor A, or after having controlled for factor A?". \medskip
 
