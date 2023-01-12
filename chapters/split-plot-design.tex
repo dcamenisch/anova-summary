@@ -11,9 +11,8 @@ A split-plot design has a \textbf{whole-plot factor}, treatment scheme was appli
 As we now have two different sizes of experimental units, we also need two error terms to model the corresponding experimental errors. One error term acting on the plot level and another one on the subplot level. We end up with the following model:
 $$Y_{ijk} = \mu + \alpha_i + \eta_{k(i)} + \beta_j + (\alpha \beta)_{ij} + \epsilon_{ijk}$$
 
-where $\alpha_i$ is the fixed effect of the whole-plot factor and $\beta_{j}$ is the fixed effect of the split-plot factor. Further $(\alpha \beta)_{ij}$ is the interaction term and $\eta_{k(i)}$, $\epsilon_{ijk}$ are the errors on the plot and subplot level. Note the due to the whole-plot error, observations from the same plot are modelled as correlated data. \medskip
+where $\alpha_i$ is the fixed effect of the whole-plot factor and $\beta_{j}$ is the fixed effect of the split-plot factor. Further $(\alpha \beta)_{ij}$ is the interaction term and $\eta_{k(i)}$, $\epsilon_{ijk}$ are the errors on the plot and subplot level. Note the due to the whole-plot error, observations from the same plot are modelled as correlated data. 
 
-To fit such a model in R, we use a mixed model approach.
 \begin{lstlisting}
 library(lmerTest)
 fit <- lmer(mass ~ a * b + (1 | plot), data = d)

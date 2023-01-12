@@ -8,7 +8,7 @@ $$H_0 : \sum_{i=1}^g c_i \mu_i = 0 \text{ and } H_A : \sum_{i=1}^g c_i \mu_i \ne
 Typically we have the side constraint that $\sum_{i=1}^g c_i = 0$. The contrast is about the differences between treatments and not about the overall response. We estimate the value of $\sum_{i=1}^g c_i \mu_i$ with:
 $$\sum_{i=1}^g c_i \hat \mu_i = \sum_{i=1}^g c_i \bar y_{i.}$$
 
-In addition, we could derive its accuracy (standard error), construct confidence intervals and do tests. In R we can perform these test like this:
+In addition, we could derive its accuracy (standard error), construct confidence intervals and do tests.
 
 \begin{lstlisting}
 library(multcomp)
@@ -18,7 +18,7 @@ summary(fit.glht)
 \end{lstlisting}
 
 Every contrast has an associated sum of squares:
-$$SS_C \frac{(\sum_{i=1}^g c_i \bar y_{i.})^2}{\sum_{i=1}^g \frac{c_i^2}{n_i}}$$	
+$$SS_C = \frac{(\sum_{i=1}^g c_i \bar y_{i.})^2}{\sum_{i=1}^g \frac{c_i^2}{n_i}}$$	
 
 It has one degree of freedom and therefore $MS_C = SS_C$. We have:
 $$\frac{MS_C}{MS_E} \sim F_{1, N-g}$$

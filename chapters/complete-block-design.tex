@@ -2,7 +2,7 @@
 
 In many situations we know that our experimental units are not homogeneous. Making explicit use of the special structure of the experimental units typically helps reduce variance. We apply the treatments to the same object / subject. This makes the subject-to-subject variability completely disappear. We also say that we block on subjects or that an individual subject is a block.
 \begin{center}
-	\includegraphics[width=\linewidth]{block-illustration.png}
+	\includegraphics[width=0.8\linewidth]{block-illustration.png}
 \end{center}
 
 
@@ -67,7 +67,7 @@ $$\frac{\sigma_{RCB}^2}{r} = \frac{\sigma_{CRD}^2}{n}$$
 
 Therefore, if we knew both squared standard errors, we would have to use a ratio of $\frac{n}{r} = \frac{\sigma_{CRD}^2}{\sigma_{RCB}^2}$. \medskip
 
-$\sigma_{RCB}^2$ is estimated by the $MS_E$ of our ECB and $\sigma_{CRD}^2$ can be estimated using a weighted average of $MS_E$ and $MS_{Block}$. The relative efficiency is then defined as:
+$\sigma_{RCB}^2$ is estimated by the $MS_E$ of our RCB and $\sigma_{CRD}^2$ can be estimated using a weighted average of $MS_E$ and $MS_{Block}$. The relative efficiency is then defined as:
 $$RE = \frac{\hat \sigma_{CRD}^2}{\hat \sigma_{RCB}^2}$$
 
 And gives us the ratio $n / r$, which can be interpreted as how many experimental units would be needed by a CRD to achieve the same efficiency / precision. Easier for a quick check is to look at the ratio $MS_{Block} / MS_E$, because:

@@ -1,6 +1,7 @@
 \section{Factorial Treatment Structure}
 
-Often treatments are combinations of the levels of two or more factors, this is called \textbf{factorial treatment structure}. If we observe all possible combinations, we call them \textbf{crossed}. In R, we can count the number of observations for every combination of the levels with:
+Often treatments are combinations of the levels of two or more factors, this is called \textbf{factorial treatment structure}. If we observe all possible combinations, we call them \textbf{crossed}.
+
 \begin{lstlisting}
 xtabs(~ factor1 + factor2, data = d)
 \end{lstlisting}
@@ -34,9 +35,8 @@ As usual, we estimate parameters using the principles of least squares and using
 	\widehat {(\alpha \beta)}_{ij} &= \bar y_{ij.} - \hat \mu - \hat \alpha_i - \hat \beta_j
 \end{align*}
 
-We end up with the mean of the observations in the corresponding cell as the expected value of the response $Y_{ijk}$.\medskip
+We end up with the mean of the observations in the corresponding cell as the expected value of the response $Y_{ijk}$.
 
-In R we use the following code:
 \begin{lstlisting}
 fit <- aov(y ~ a * b, data = d) 
 ## alternatively: aov(y ~ a + b + a:b, data = d)

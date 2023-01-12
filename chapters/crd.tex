@@ -5,8 +5,7 @@ We assume for the moment that the experimental units are homogeneous. We know ho
 
 \subsection{One-Way Analysis of Variance}
 
-On an abstract level we want to compare $g \geq 2$ treatments, having $N$ experimental units, that we assign randomly to the different treatment groups having $n_i$ observations each. This is what we call \textbf{completely randomized design}, it is the most elementary experimental design. If all the treatment groups have the same number of experimental units, we call the design \textbf{balanced}. Such random assignments can be done as follows:
-
+On an abstract level we want to compare $g \geq 2$ treatments, having $N$ experimental units, that we assign randomly to the different treatment groups having $n_i$ observations each. This is what we call \textbf{completely randomized design}, it is the most elementary experimental design. If all the treatment groups have the same number of experimental units, we call the design \textbf{balanced}.
 \begin{lstlisting}
 sample(treat.ord) ## Random Permutation of treat.ord
 \end{lstlisting}
@@ -60,9 +59,8 @@ $$SS_E = \sum_{i=1}^g \sum_{j=1}^{n_i}(y_{ij} - \hat \mu_i)^2$$
 Alternatively we can write this as:
 $$MS_E = \frac{1}{N-g} \sum_{i=1}^g (n_i - 1) s_i^2, \qquad s_i^2 = \frac{1}{n_i -1} \sum_{j=1}^{n_i}(y_{ij} - \hat \mu_i)^2$$
 
-Where $s_i^2$ is the empirical variance in treatment group $i$. The demoninator $N - g$ ensures that $\sigma^2$ is an unbiased estimator (the error estimate has $N-g$ degrees of freedom).\medskip
+Where $s_i^2$ is the empirical variance in treatment group $i$. The demoninator $N - g$ ensures that $\sigma^2$ is an unbiased estimator (the error estimate has $N-g$ degrees of freedom).
 
-We can use the following code to fit a model in R:
 \begin{lstlisting}
 fit <- aov(y ~ x, data = d)
 ## Get the estimated coefficients
@@ -97,15 +95,14 @@ $$F\text{-ratio } = \frac{MS_{Trt}}{MS_E} \sim F_{g-1, N-g}$$
 
 If the variation between groups is substantially larger than the variation within groups (higher $F$-ratio), we have evidence against $H_0$. The $F$-distribution looks as follows:
 \begin{center}
-	\includegraphics[width=\linewidth]{f-distribution.png}
+	\includegraphics[width=0.8\linewidth]{f-distribution.png}
 \end{center}
 
 As with any other statistical test, we reject $H_0$ if the observed value of the $F$-ratio, our test statistics, lies in an "extreme" region of the corresponding $F$-distribution:
 $$F \text{-ratio} > F_{g-1, N-g, 1 - \alpha}$$
 
-Where $\alpha$ is often chosen as 0.05. Since this test is based on the $F$-ratio we call it an \textbf{$F$-test}.\medskip
+Where $\alpha$ is often chosen as 0.05. Since this test is based on the $F$-ratio we call it an \textbf{$F$-test}.
 
-In R, we can use the following function to get the ANOVA table and the $p$-value of the $F$-test.
 \begin{lstlisting}
 summary(fit)
 ##             Df Sum Sq Mean Sq F value Pr(>F)
@@ -139,7 +136,7 @@ The errors $\epsilon_{ij}$ cannot be observed, but the redisuduals $r_{ij} = y_{
 In a QQ-plot we plot the empirical quantiles of the residuals vs. the theoretical quantiles. The plot should show a more or less straight line if the normality assumption is correct.
 \\[-20pt]
 \begin{center}
-	\includegraphics[width=\linewidth]{qq-plot.png}
+	\includegraphics[width=0.8\linewidth]{qq-plot.png}
 \end{center}
 \begin{lstlisting}
 plot(fit, which = 2)
@@ -149,7 +146,7 @@ plot(fit, which = 2)
 
 The Tukey-Anscombe plot (TA-plot) plots the residuals $r_{ij}$ vs. the fitted values $\hat \mu_i$ (estimated cell means). It allows us to check whether the residuals have constant variance.
 \begin{center}
-	\includegraphics[width=\linewidth]{ta-plot.png}
+	\includegraphics[width=0.8\linewidth]{ta-plot.png}
 \end{center}
 \begin{lstlisting}
 plot(fit, which = 1)
@@ -202,9 +199,8 @@ Power can be thought of as the probability of success, i.e. getting a significan
 
 We mainly use sample size and experimental design to maximize the power. Instead of doing the exact calculations, we rather choose an alternative way. We can always simulate a lot of data sets under $H_A$ that we believe in and check how often we are rejecting the corresponding $H_0$. The empirical rejection rate is then an estimate of the power. A nice side effect of doing a power analysis is that you actually do the whole data analysis on simulated data and you immediately see whether it works as intended. From a conceptual point of view, we can use such a simulation-based procedure for any design. However, the number of parameters grows rather quickly with increasing model complexity. \medskip
 
-In that sense, the results of a power analysis are typically not very precise. However, they should still give us a rough idea about the required sample size in the sense of whether we need 6 or 60 observations per group.\medskip
+In that sense, the results of a power analysis are typically not very precise. However, they should still give us a rough idea about the required sample size in the sense of whether we need 6 or 60 observations per group.
 
-In R we can calculate the power for simple designs like this:
 \begin{lstlisting}
 mu <- c(57, 63, rep(60, 3)) 
 sigma2 <- 7 
