@@ -15,12 +15,17 @@ The experimental units should be as similar as possible within the same block, b
 In the most basic form, we assume that we do not have replicates within a block. This means that we only observe every treatment once in each block. The analysis of a randomized complete block design is straightforward. We treat the block factor as "just another" factor in our model. As we have no replicates within blocks, we can only fit a\textbf{ main effects model} of the form:
 $$Y_{ij} = \mu + \alpha_i + \beta_j + \epsilon_{ij}$$
 
-According to this model, we implicitly assume that blocks only cause additive shifts. Or in other words, the treatment effects are always the same, no matter what block we consider.\medskip
+We implicitly assume that blocks only cause additive shifts. Or in other words, the treatment effects are always the same, no matter what block we consider.\medskip
 
 Typically, we are not inspecting the $p$-value of the block factor, mainly because of the fact that we did not randomize blocks to experimental units and we already knew that blocks are different. We would like the block factor to explain a lot of variation, hence if the mean square of the block factor is larger than the error mean square $MS_E$ we conclude that blocking was efficient. \medskip
 
 Instead of a single treatment factor we can also have a factorial treatment structure within every block, e.g. a two-factor factorial which we would model as $Y \sim Block + A * B$. Here, we could actually test the interaction between $A$ and $B$ even if every level combination appears only once in every block. As we have multiple blocks, we have multiple observations for every level combination of $A$ and $B$! However, a randomized complete block design can only be used with one blocking factor.
 
+\begin{center}
+	\includegraphics[width=\linewidth]{df_two-factor_factorial.png}
+\end{center}
+
+We can test for interactions even if we only have one replicate per combination and block.
 
 \subsection{Multiple Block Factors}
 

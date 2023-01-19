@@ -1,6 +1,11 @@
 \section{Various}
 
 
+\begin{tcolorbox}
+	Standard Deviation = $\sqrt{\text{Variance}}$, Standard Deviation = $\sigma$, Variance = $\sigma^2$
+\end{tcolorbox}
+
+
 \subsection{Two-Sampled t-Test}
 
 \subsubsection{Unpaired Data}
@@ -23,6 +28,8 @@ stripchart(y ~ x, vertical = T, pch = 1, data = d)
 boxplot(y ~ x, data = d)
 with(d, interaction.plot(x.factor = a, trace.factor = b, response = y))
 \end{lstlisting}
+
+\textbf{If the lines of an interaction plot are NOT parallel, there is possibly an interaction effect we have to consider.}
 
 
 \subsection{Data Generation / Calculations}
@@ -68,5 +75,131 @@ A soil scientist wanted to investigate the effects of nitrogen supplied in four 
 This is a split-plot design with whole-plot factor nitrogen, split-plot factor thatch and a block factor block.
 $$Y_{ijkl} = \mu + \gamma_i + \alpha_j + \beta_k + (\alpha \beta)_{jk} + \eta_{l(ij)} + \epsilon_{l(ijk)}$$
 
-Where $l = 1$, $\gamma_i$ fixed effect of the block, $\alpha_j$ fixed main effect of nitrogen, $\beta_k$ fixed main effect of thatch, $(\alpha \beta)_{jk}$ interaction, $\eta_{l(ij)}$ error on the whole-plot level and $\epsilon_{l(ijk)}$ the error on the split-plot level.
+Where $l = 1$, $\gamma_i$ fixed effect of the block, $\alpha_j$ fixed main effect of nitrogen, $\beta_k$ fixed main effect of thatch, $(\alpha \beta)_{jk}$ interaction, $\eta_{l(ij)}$ error on the whole-plot level and $\epsilon_{l(ijk)}$ the error on the split-plot level. \medskip
 
+
+\hrulefill
+
+\textbf{Ex.} We fitted the RCB experiment and plot \texttt{plot(TukeyHSD(x = "fit", "treatment", conf.level = 0.95))}. \medskip
+
+\begin{wrapfigure}[10]{l}{0.4\linewidth}
+    \vspace{-15pt}
+    \includegraphics[width=1.15\linewidth]{tukey_confint.png}
+\end{wrapfigure}
+
+Which treatment differences are significant?
+\begin{itemize}
+	\item[$\square$] $2-1, 3 - 1, 4 - 1$
+	\item[$\square$] $3-2$
+	\item[$\square$] $4-2, 4-3$
+	\item[$\square$] $2-1$
+	\item[$\boxtimes$] $2-1, 3-1, 4-1, 3-2$
+\end{itemize}
+Since a treatment difference is significant if the corresponding confidence interval does not cover 0.
+
+
+\hrulefill
+
+\textbf{Ex.} Given a two-way ANOVA model with a significant factor $A$, an insignificant factor $B$ and a significant interaction term. Can we remove any terms from the model? \medskip
+
+No, we should not remove a significant term and since the interaction is significant we cannot remove the main effect $B$.
+
+
+\hrulefill
+
+\textbf{Ex.} When fitting two ANOVA models with \texttt{fit1 <- aov(y ~ age * educ, data = survey)} and \texttt{fit2 <- aov(y ~ educ * age, data = survey)}, we might encounter different $p$-values for both \texttt{age} and \texttt{educ}, what might be the reason? \medskip
+
+If there is a difference, the design must be unbalanced. In that case, the type I sum of squares used in \texttt{aov()} is dependent on the order of how the variables appear in the model. The interaction has the same $p$-value because it is adjusted for \texttt{age} and \texttt{educ} in both cases.
+
+
+\hrulefill
+
+\textbf{Ex.} The mixed effect model $\text{Rating}_{ij} = \mu + \text{Type}_i + \text{Subject}_j + \epsilon_{ij}$ is used. Type is a fixed effect and Subject a random (block) factor. For fixed $j$, are the Rating$_{ij}$ uncorrelated? \medskip
+
+No, they are not as subjects have an effect since $\text{Var}(\text{Subject}_i)) \neq 0$.
+
+
+\hrulefill
+
+\textbf{Ex.} Which statement about RCB is true:
+\begin{itemize}
+	\item[$\square$]  A RCB tries to ensure heterogeneity within blocks
+	\item[$\boxtimes$] The error with $r$ blocks hard $r-1$ less DF than the error of a completely randomized design with the same number of experimental units.
+	\item[$\square$] The number of experimental units in a block can be less than the number of treatments
+	\item[$\square$] Can be constructed from a completely randomized design by imposing blocking after randomization
+\end{itemize}
+
+
+\hrulefill
+
+\textbf{Ex.} Given three levels of a treatment, which design should be preferred if interested in difference of treatments (assuming the variance of the units is the same for both designs)?\smallskip
+
+D1: 2 pieces of land with 3 sub-fields each and form 2 complete blocks\smallskip
+
+D2: 3 pieces of land with 2 sub-fields each and form 3 blocks
+\begin{itemize}
+	\item[$\boxtimes$] D1 should be preferred
+	\item[$\square$] D2 should be preferred
+	\item[$\square$] There is no important difference between D1 and D2
+\end{itemize}
+The incomplete block design D2 has more variance in the estimates of treatment differences than the complete block design D1. Therefore D1 should be preferred.
+
+
+\hrulefill
+
+\textbf{Ex.} Consider a balanced one-way ANOVA model. What happens to the 95\%-quantile of the $F$-distribution of the global test if we increase the number of observations?
+\begin{itemize}
+	\item[$\square$] The quantile gets larger
+	\item[$\boxtimes$] The quantile gets smaller
+	\item[$\square$] The quantile stays the same
+\end{itemize}
+
+
+\hrulefill
+
+\textbf{Ex.} Consider a test with 4 types of toothpaste and 3 types of packaging. 60 participants have been selected and each participant is supposed to test and rate every packaging of exactly one toothpaste type. Which type of design is this?
+\begin{itemize}
+	\item[$\boxtimes$] Split-plot design with participants as whole-plots
+	\item[$\square$] Split-plot design with toothpaste as whole-plots
+	\item[$\square$] Split-plot design with packagings as whole-plots
+\end{itemize}
+
+
+\hrulefill
+
+\textbf{Ex.} Consider the following experimental design with a treatment factor having levels $A, B, C, D, E, F$. Which of the statements is true?
+\begin{center}
+	\begin{tabular}{c | c  | c | c | c | c}
+		 Block 1 & Block 2 & Block 3 & Block 4 & Block 5 & Block 6\\ \hline
+		 A & A & B & D & D & B \\
+		 B & C & C & E & F & F
+	\end{tabular}
+\end{center}
+
+\begin{itemize}
+	\item[$\square$] It is not possible to estimate all treatment differences
+	\item[$\square$] The design is balanced
+	\item[$\square$] This is an unreduced BIBD
+	\item[$\boxtimes$] If estimating each of the treatment differences $A - B, F - B$, and $D - F$ has variance $2 \sigma^2$, then estimating the treatment difference $A - D$ via the decomposition $A - D = (A -B) - (F - B) - (D - F)$ has variance $6 \sigma^2$.
+\end{itemize}
+
+
+\hrulefill
+
+\textbf{Ex.} Which of the statements is \textbf{wrong}?
+\begin{itemize}
+	\item[$\square$] Blocking is used to reduce variance by choosing blocks such that each has homogeneous experimental units.
+	\item[$\boxtimes$] In an RCB, we can never test interactions between block and treatment.
+	\item[$\square$] In an RCB with a factorial treatment structure, we can test interactions between treatment factors even if we only observe every treatment combination once in each block.
+	\item[$\square$] Blocking can increase precision, even if the $p$-value corresponding to the block factor is not significant.
+\end{itemize}
+
+
+\hrulefill
+
+\textbf{Ex.} Which of the statements about multiple testing is true?
+\begin{itemize}
+	\item[$\square$] The more different tests we perform (each at a fixed level $\alpha$), the less likely we are committing a type I error.
+	\item[$\square$] Tukey Honest Significant Difference is less powerful than the Bonferroni correction.
+	\item[$\boxtimes$] The family-wise error rate (the probability of committing a type I error) can always be controlled by using the Bonferroni procedure. 
+\end{itemize}

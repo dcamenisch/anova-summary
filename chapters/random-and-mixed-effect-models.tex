@@ -1,4 +1,4 @@
-\section{Random and Mixed Effects Models}
+\section{Random \& Mixed Effects Models}
 
 Up to now, treatment effects ($\alpha_i$) where fixed, unknown quantities that we tried to estimate. This means we are making a statement about a specific, fixed set of treatments. Such models are also called \textbf{fixed effects models}.
 
@@ -24,7 +24,7 @@ Observations from different samples are uncorrelated while observations from the
 	\includegraphics[width=\linewidth]{icc.png}
 \end{center}
 
-The same holds for multiple random effects. For them, the correlation is the sum of shared variance components divided by the sum of all variance components. Parameter estimation for the variance components $\sigma_\alpha^2,\, \sigma^2$ is done with the so-called restricted maximum likelihood technique.
+The same holds for multiple random effects. For them, the correlation is the sum of shared variance components divided by the sum of all variance components. Parameter estimation for the variance components $\sigma_\alpha^2,\, \sigma^2$ is done with the so-called restricted maximum likelihood technique. The total variance of $Y_{ij}$ is estimated as $\hat \sigma_\alpha^2 + \hat \sigma^2$ and the intraclass correlation as $ \hat \sigma_\alpha^2 / (\hat \sigma_\alpha^2 + \hat \sigma^2)$.
 
 \begin{lstlisting}
 library(lme4) ## lmerTest would be an alternative
@@ -43,7 +43,7 @@ fit <- lmer(y ~ (1 | x), data = d)
 ## (Intercept)    82.55          5.91     14
 \end{lstlisting}
 
-Confidence intervals are often larger than with fixed effect models, as we now try to make a statement about a larger population and not only about the measured samples. To verify our model assumptions we can again use QQ-plots:
+Confidence intervals are often larger than with fixed effect models, as we now try to make a statement about a larger population and not only about the measured samples. In general, variances are "difficult" to estimate in the sense that we need a lot of observations to have some reasonable accuracy. To verify our model assumptions we can again use QQ-plots:
 \begin{lstlisting}
 ## QQ-plots of random effects
 qqnorm(ranef(fit)$x[,1], main = "x")
